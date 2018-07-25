@@ -26,3 +26,11 @@ Route::resource('shop_users','shop_userController');
 Route::resource('menu_cates','MenuCateController');
 Route::resource('menus','MenuController');
 Route::resource('actions','ActionController');
+
+Route::post('upload',function (){
+    $storage=\Illuminate\Support\Facades\Storage::disk('oss');
+    $fileName=$storage->putFile('upload',request()->file('file'));
+    return [
+        'fileName'=>$fileName
+    ];
+})->name('upload');

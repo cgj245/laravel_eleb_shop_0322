@@ -7,6 +7,8 @@ use App\Models\MenuCate;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class MenuController extends Controller
 {
@@ -26,9 +28,9 @@ class MenuController extends Controller
        $data=[];
 
         $cates=MenuCate::where('shop_id',$shop_id)->get();
-        foreach ($cates as &$cate){
-            $where[]=['category_id',$cate->id];
-        }
+//        foreach ($cates as &$cate){
+//            $where[]=['category_id',$cate->id];
+//        }
 
         if ($keyword!=null){
             $where[]=['goods_name','like','%'.$keyword.'%'];
@@ -76,15 +78,17 @@ class MenuController extends Controller
         $satisfy_count=0;
         $satisfy_rate=0;
         $rating=rand(1,5);
-
-       $file=$request->goods_img;
-        $fileName=$file->store('public/goods_img');
+        $storage=Storage::disk('oss');
+        $fileName=$storage->putFile('menu',$request->goods_img);
+        $shop_id=Auth::user()->shop_id;
+//       $file=$request->goods_img;
+//        $fileName=$file->store('public/goods_img');goods_img
         Menu::create(['goods_name'=>$request->goods_name,
             'category_id'=>$request->category_id,
             'goods_price'=>$request->goods_price,
-            'shop_id'=>$request->shop_id,
+            'shop_id'=>$shop_id,
             'description'=>$request->description,
-            'goods_img'=>$fileName,
+            'goods_img'=>$storage->url($fileName),
             'month_sales'=>$month_sales,
             'rating_count'=>$rating_count,
             'tips'=>$tips,
@@ -103,7 +107,9 @@ class MenuController extends Controller
 
     public function edit(Menu $menu)
     {
-        return view('menu/edit',compact('menu'));
+        $shop_id=Auth::user()->shop_id;
+        $menuCate=MenuCate::where('shop_id','=',"{$shop_id}")->paginate();
+        return view('menu/edit',compact('menu','menuCate'));
     }
 
     public function update(Request $request,Menu $menu)
@@ -116,18 +122,18 @@ class MenuController extends Controller
         $satisfy_count=0;
         $satisfy_rate=0;
         $rating=0;
-
+        $shop_id=Auth::user()->shop_id;
 
         if(!empty($request->goods_img)){
 
-            $file=$request->goods_img;
-            $fileName=$file->store('public/goods_img');
+            $storage=Storage::disk('oss');
+            $fileName=$storage->putFile('menu',$request->goods_img);
             $menu->update(['goods_name'=>$request->goods_name,
                 'category_id'=>$request->category_id,
                 'goods_price'=>$request->goods_price,
-                'shop_id'=>$request->shop_id,
+                'shop_id'=>$shop_id,
                 'description'=>$request->description,
-                'goods_img'=>$fileName,
+                'goods_img'=>$storage->url($fileName),
                 'month_sales'=>$month_sales,
                 'rating_count'=>$rating_count,
                 'tips'=>$tips,
@@ -139,7 +145,7 @@ class MenuController extends Controller
             $menu->update(['goods_name'=>$request->goods_name,
                 'category_id'=>$request->category_id,
                 'goods_price'=>$request->goods_price,
-                'shop_id'=>$request->shop_id,
+                'shop_id'=>$shop_id,
                 'description'=>$request->description,
                 'month_sales'=>$month_sales,
                 'rating_count'=>$rating_count,
@@ -150,7 +156,7 @@ class MenuController extends Controller
             ]);
         }
 
-        return redirect()->route('menus.index')->with('success','添加成功');
+        return redirect()->route('menus.index')->with('success','修改成功');
     }
 
 }

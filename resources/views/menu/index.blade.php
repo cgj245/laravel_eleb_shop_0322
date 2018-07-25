@@ -40,7 +40,7 @@
             <td>{{$menu->goods_price}}</td>
             <td>{{$menu->description}}</td>
             <td>{{$menu->month_sales}}</td>
-            <td><img src="{{\Illuminate\Support\Facades\Storage::url($menu->goods_img)}}" width="50px" height="50px" alt=""></td>
+            <td><img src="{{$menu->goods_img}}" width="50px" height="50px" alt=""></td>
             <td>
                 <a href="{{route('menus.edit',[$menu])}}" class="btn btn-primary">编辑</a>
                 <span><form action="{{route('menus.destroy',[$menu])}}" method="post" style="display:inline">
