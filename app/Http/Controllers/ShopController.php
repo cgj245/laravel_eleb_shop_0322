@@ -58,16 +58,18 @@ class ShopController extends Controller
         $status1=0;//店铺注册审核状态0表示待审核
         $status2=1;//商家账号状态1表示是启用
         $shop_rating=0;
-        $file=$request->shop_img;
-        $fileName=$file->store('public/shopimg');
-        $img=Storage::url($fileName);
+//        $file=$request->shop_img;
+//        $fileName=$file->store('public/shopimg');
+        $storage=Storage::disk('oss');
+//            $fileName=$storage->putFile('menu',$request->goods_img);
+        //$img=Storage::url($fileName);
 
         DB::beginTransaction();
 
         try{
             $shopinfo= Shop::create([
                 'shop_name'=>$request->shop_name,
-                'shop_img'=>url($img),
+                'shop_img'=>$request->shop_img,
                 'shop_category_id'=>$request->shop_category_id,
                 'shop_rating'=>$shop_rating,
                 'start_send'=>$request->start_send,

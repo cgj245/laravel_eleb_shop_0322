@@ -26,15 +26,14 @@
         </div>
         <div class="form-group">
             <label>商品图片:</label>
-            <input type="hidden" id="img" name="goods_img">
+            <input type="hidden" id="img" width="50px" name="goods_img">
             <div id="uploader-demo">
                 <!--用来存放item-->
                 <div id="fileList" class="uploader-list"></div>
                 <div id="filePicker">选择图片</div>
             </div>
-            <img src="{{$menu->goods_img}}" alt="">
         </div>
-        <img src="" id="img2" alt="">
+        <img src="" id="img2" alt="" width="50px">
         {{csrf_field()}}
         {{method_field('PATCH')}}
         <button type="submit" class="btn btn-primary btn-block"> 提交</button>

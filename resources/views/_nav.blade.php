@@ -18,12 +18,15 @@
 
                 <li><a href="{{route('shop_users.index')}}">我的商家账号</a></li>
                 <li><a href="{{route('actions.index')}}">活动列表</a></li>
+                <li><a href="{{route('orders.index')}}">订单管理</a></li>
+                <li><a href="{{route('eventShops.index')}}">报名列表</a></li>
+                <li><a href="{{route('events.index')}}">活动报名</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">菜品管理  <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{route('menu_cates.index')}}">菜品分类</a></li>
                         <li><a href="{{route('menus.index')}}">菜品信息</a></li>
-                        <li><a href="#">Something else here</a></li>
+                        <li><a href="{{route('menuCount')}}">菜品销量统计</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">Separated link</a></li>
                         <li role="separator" class="divider"></li>
